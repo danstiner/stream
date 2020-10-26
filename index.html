@@ -4,29 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Streaming</title>
+    <title>FTL Test Player</title>
     <style>
         body {
             margin: 0;
             background-color: #000000;
             overflow: hidden;
         }
+
+        video {
+            width: 100vw;
+            height: calc(100vh - 41px);
+        }
+
+        form {
+            padding: 10px;
+        }
+
+        form label {
+            color: white;
+        }
+
+        #janusServerUri {
+            width: 200px;
+        }
     </style>
 </head>
 
 <body>
+    <form id="playerForm" action="">
+        <label for="janusServerUri">Janus Server URI</label>
+        <input id="janusServerUri" type="text" value="//24.35.78.11:8088/janus">
+
+        <label for="channelId">Channel ID</label>
+        <input id="channelId" type="number" value="1">
+
+        <input type="submit" value="Load Player">
+    </form>
+
     <video autoplay controls></video>
 
     <script type="module" src="main.js"></script>
     <script>
         window.addEventListener("load", () => {
+            let form = document.getElementById("playerForm");
+            let janusServerUri = document.getElementById("janusServerUri");
+            let channelId = document.getElementById("channelId");
 
-		// If you're loading this via NPM, you do not need the JanusFtlPlayer.
-		let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), "//vpn.danielstiner.me:8089/janus");
-		player.init(1);
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                // If you're loading this via NPM, you do not need the JanusFtlPlayer.
+                let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), janusServerUri.value);
+                player.init(parseInt(channelId.value));
+            });
         });
     </script>
 </body>
 
 </html>
-
