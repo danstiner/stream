@@ -16,48 +16,20 @@
             width: 100vw;
             height: calc(100vh - 41px);
         }
-
-        form {
-            padding: 10px;
-        }
-
-        form label {
-            color: white;
-        }
-
-        #janusServerUri {
-            width: 200px;
-        }
     </style>
 </head>
 
 <body>
-    <form id="playerForm" action="">
-        <label for="janusServerUri">Janus Server URI</label>
-        <input id="janusServerUri" type="text" value="https://server.stream.danielstiner.me/janus">
-
-        <label for="channelId">Channel ID</label>
-        <input id="channelId" type="number" value="1">
-
-        <input type="submit" value="Load Player">
-    </form>
-
     <video autoplay controls></video>
 
     <script type="module" src="main.js"></script>
     <script>
         window.addEventListener("load", () => {
-            let form = document.getElementById("playerForm");
-            let janusServerUri = document.getElementById("janusServerUri");
-            let channelId = document.getElementById("channelId");
+            let serverUri = "https://server.stream.danielstiner.me/janus";
+            let channelId = 1;
 
-            form.addEventListener("submit", (e) => {
-                e.preventDefault();
-
-                // If you're loading this via NPM, you do not need the JanusFtlPlayer.
-                let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), janusServerUri.value);
-                player.init(parseInt(channelId.value));
-            });
+            let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), serverUri);
+            player.init(channelId);
         });
     </script>
 </body>
