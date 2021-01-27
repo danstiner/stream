@@ -24,11 +24,11 @@
 
     <script type="module" src="main.js"></script>
     <script>
-        window.addEventListener("load", () => {
-            let serverUri = "https://janus.stream.danielstiner.me/janus";
-            let channelId = 1;
+        let janusUri = "https://janus.stream.danielstiner.me/janus";
+        let channelId = 1;
 
-            let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), serverUri);
+        window.addEventListener("load", () => {
+            let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), janusUri);
             player.init(channelId);
         });
     </script>
