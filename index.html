@@ -35,6 +35,7 @@
     </script>
     <script>
         let socket = new WebSocket(playsUri);
+        let element = document.querySelector("video");
 
         socket.onopen = function(e) {
             console.log("[open] Connection established");
@@ -51,11 +52,11 @@
                     b: e.buttons,
                 });
             };
-            onmousemove = onmouse;
-            onmousedown = onmouse;
-            onmouseup = onmouse;
+            element.onmousemove = onmouse;
+            element.onmousedown = onmouse;
+            element.onmouseup = onmouse;
 
-            onkeydown = function(e) {
+            element.onkeydown = function(e) {
                 const code = e.code;
                 socket.send(JSON.stringify({
                     "type": "KeyDown",
@@ -63,7 +64,7 @@
                 }));
             };
 
-            onkeyup = function(e) {
+            element.onkeyup = function(e) {
                 const code = e.code;
                 socket.send(JSON.stringify({
                     "type": "KeyUp",
