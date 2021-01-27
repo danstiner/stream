@@ -26,7 +26,7 @@
     <script>
         let janusUri = "https://janus.stream.danielstiner.me/janus";
         let channelId = 1;
-        let playsUri = "https://janus.stream.danielstiner.me/plays/ws";
+        let playsUri = "wss://janus.stream.danielstiner.me/plays/ws";
 
         window.addEventListener("load", () => {
             let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), janusUri);
