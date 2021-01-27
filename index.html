@@ -26,11 +26,69 @@
     <script>
         let janusUri = "https://janus.stream.danielstiner.me/janus";
         let channelId = 1;
+        let playsUri = "wss://plays.stream.danielstiner.me:8090/";
 
         window.addEventListener("load", () => {
             let player = new JanusFtlPlayer.FtlPlayer(document.querySelector("video"), janusUri);
             player.init(channelId);
         });
+    </script>
+    <script>
+        let socket = new WebSocket(playsUri);
+
+        socket.onopen = function(e) {
+            console.log("[open] Connection established");
+
+            function send(payload) {
+                socket.send(JSON.stringify(payload));
+            }
+
+            function onmouse(e) {
+                send({
+                    type: "Mouse",
+                    x: e.clientX / window.innerWidth,
+                    y: e.clientY / window.innerHeight,
+                    b: e.buttons,
+                });
+            };
+            onmousemove = onmouse;
+            onmousedown = onmouse;
+            onmouseup = onmouse;
+
+            onkeydown = function(e) {
+                const code = e.code;
+                socket.send(JSON.stringify({
+                    "type": "KeyDown",
+                    code,
+                }));
+            };
+
+            onkeyup = function(e) {
+                const code = e.code;
+                socket.send(JSON.stringify({
+                    "type": "KeyUp",
+                    code,
+                }));
+            };
+        };
+
+        socket.onmessage = function(event) {
+            console.log(`[message] Data received from server: ${event.data}`);
+        };
+
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+            } else {
+                // e.g. server process killed or network down
+                // event.code is usually 1006 in this case
+                console.log('[close] Connection died');
+            }
+        };
+
+        socket.onerror = function(error) {
+            console.log(`[error] ${error.message}`);
+        };
     </script>
 </body>
 
